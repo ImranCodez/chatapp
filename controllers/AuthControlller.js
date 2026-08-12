@@ -1,4 +1,5 @@
 const sendResponse = require("../helpers/responsehandler");
+const { generateAccsToken, generateRefToken } = require("../helpers/token");
 const User = require("../models/userSchema");
 
 // ...........signup part...//
@@ -13,7 +14,6 @@ const signupuser = async (req, res) => {
     });
     if (existingUser)
       return sendResponse(res, 400, "User already exists with this email");
-    const generateOTP = generateotp();
     const user = new User({
       fullname,
       email: email.toLowerCase(),
@@ -22,6 +22,8 @@ const signupuser = async (req, res) => {
     user.save();
     sendResponse(res, 201, "signup is successfull");
   } catch (error) {
+    console.log(error);
+    
     sendResponse(res, 500, false, "Internal server error");
   }
 };

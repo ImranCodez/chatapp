@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const sendResponse = require("../helpers/responsehandler");
 
 const userAuthSchema = new mongoose.Schema(
-  { fullName:{
+  { fullname:{
     type:String,
     required:true,
   },

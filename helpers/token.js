@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const sendResponse = require("./responsiveHandler");
+const sendResponse = require("./responsehandler");
 const { json } = require("express");
 
 const generateAccsToken = (user) => {
