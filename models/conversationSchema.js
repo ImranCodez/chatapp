@@ -2,21 +2,21 @@ const mongoose = require("mongoose");
 const convschema = new mongoose.Schema(
   {
     creator: {
-      tyep: mongoose.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "user",
       required: true,
     },
     participent: {
-      tyep: mogoose.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "user",
       required: true,
     },
     lastmessage: {
       type: String,
-      default: Null,
+      default:"null",
     },
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.models("convschema", convschema);
+module.exports = mongoose.model("convschema", convschema);
