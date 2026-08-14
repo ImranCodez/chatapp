@@ -1,12 +1,13 @@
 const sendResponse = require("../helpers/responsehandler");
 const conversationSchema = require("../models/conversationSchema");
+const messaegesSchema = require("../models/messaegesSchema");
 const userSchema = require("../models/userSchema");
 
 const addFriend = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("myemail",email);
-    
+    console.log("myemail", email);
+
     if (email == req.user?.email)
       return sendResponse(res, 400, "tyr with another email");
     const friend = await userSchema.findOne({ email });
@@ -20,7 +21,7 @@ const addFriend = async (req, res) => {
     });
     if (existparticipent)
       return sendResponse(res, 400, "already in frind list");
-    console.log("user=>",req.user);
+    console.log("user=>", req.user);
     const createconv = await conversationSchema.create({
       creator: req.user.id,
       participent: friend._id,
@@ -31,4 +32,37 @@ const addFriend = async (req, res) => {
     console.log(error);
   }
 };
-module.exports={addFriend}
+const conversation = async (req, res) => {
+  try {
+    const conv = await conversationSchema.find({
+      $or: [{ creator: req.user.id }, { participent: req.user.id }],
+    });
+    return sendResponse(res, 200, conv);
+  } catch (error) {
+    console.log(error);
+    sendResponse(res, 500, "Internal server error");
+  }
+};
+
+const Sendmessage = async (req, res) => {
+  try {
+    const { content, conversation, contentype = "text" } = req.body;
+    const isExistConversation = await conversationSchema.find({
+      _id: conversation,
+    });
+    if (!isExistConversation)
+      return sendResponse(res, 404, "conversation not found");
+    const message = await messaegesSchema.create({
+      content,
+      contentype,
+      conversation,
+      sender: req.user.id,
+    });
+    sendResponse(res, 201, "sent hoise");
+  } catch (error) {
+    console.log(error);
+    sendResponse(res, 500, "Internal server error");
+  }
+};
+
+module.exports = { addFriend, conversation, Sendmessage };

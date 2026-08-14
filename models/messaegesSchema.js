@@ -11,12 +11,12 @@ const messages = new mongoose.Schema({
     required: true,
   },
   sender: {
-    type: mogoose.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "user",
     required: true,
   },
   conversation: {
-    type: mogoose.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "convschema",
     required: true,
   },
