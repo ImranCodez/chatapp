@@ -36,7 +36,7 @@ const conversation = async (req, res) => {
   try {
     const conv = await conversationSchema.find({
       $or: [{ creator: req.user.id }, { participent: req.user.id }],
-    });
+    }).populate("creator participent", "fullname");
     return sendResponse(res, 200, conv);
   } catch (error) {
     console.log(error);
@@ -58,11 +58,23 @@ const Sendmessage = async (req, res) => {
       conversation,
       sender: req.user.id,
     });
+    global.io.to(conversation).emit("new_message",message)
     sendResponse(res, 201, "sent hoise");
   } catch (error) {
     console.log(error);
     sendResponse(res, 500, "Internal server error");
   }
 };
+const messageGet = async (req, res) => {
+  try {
+    const { conversation } = req.params;
+    if (!conversation) return sendResponse(res, 400, " conversation not found");
+    const message = await messaegesSchema.find({conversation});
+    sendResponse(res, 200, message);
+  } catch (error) {
+    sendResponse(res, 500, "Internal server error");
+    console.log(error);
+  }
+};
 
-module.exports = { addFriend, conversation, Sendmessage };
+module.exports = { addFriend, conversation, Sendmessage,messageGet };
