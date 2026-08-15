@@ -8,7 +8,7 @@ const generateAccsToken = (user) => {
     {
       id: user._id,
       email: user.email,
-      role: user.role,
+   
     },
     process.env.JWT_SECRET,
     { expiresIn: "1h" },
@@ -19,7 +19,7 @@ const generateRefToken = (user) => {
     { 
       user: user._id,
       email: user.email,
-      role: user.role,
+    
     },
 
     process.env.JWT_SECRET,
