@@ -22,8 +22,6 @@ const signupuser = async (req, res) => {
     user.save();
     sendResponse(res, 201, "signup is successfull");
   } catch (error) {
-    console.log(error);
-    
     sendResponse(res, 500, false, "Internal server error");
   }
 };
