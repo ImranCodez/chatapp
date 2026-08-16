@@ -1,7 +1,7 @@
 import React from "react";
 
 const Home = () => {
-  const activeChat = true   ;
+  const activeChat = true;
   if (!activeChat) {
     return (
       <div className="w-full h-screen flex justify-center items-center ">

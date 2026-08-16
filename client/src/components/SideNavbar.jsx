@@ -1,10 +1,11 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import ConversationItems from "./ui/ConversationItems";
 const SideNavbar = () => {
   return (
     <div className="bg-blue-600 h-screen w-65 pl-4 flex flex-col">
       <div>
-        <h1 className="text-3xl pl-5 pt-3 font-bold text-white">Chatapp</h1>
+        <h1 className="text-3xl pl-5 pt-3 font-bold text-white"><Link to="/">chatApp</Link></h1>
         <div className="mt-3 space-y-3">
           <ConversationItems />
           <ConversationItems />
@@ -13,8 +14,10 @@ const SideNavbar = () => {
           <ConversationItems />
         </div>
       </div>
-      <div className="m-auto bg-slate-900 text-white py-2 px-18 rounded-2xl transition-all duration-[400ms] hover:bg-white hover:text-black hover:font-semibold">
-        {" "}
+      <div className=" mt-12 mr-3 mb-3 bg-slate-900 text-white py-2 px-18 rounded-2xl transition-all duration-[400ms] hover:bg-white hover:text-black hover:font-semibold">
+        <Link to="/login">Login</Link>
+      </div>
+      <div className=" bg-slate-900 mr-3 text-white py-2 px-12 rounded-2xl transition-all duration-[400ms] hover:bg-white hover:text-black hover:font-semibold">
         <p>Log Out</p>
       </div>
     </div>
