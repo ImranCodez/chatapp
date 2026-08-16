@@ -73,8 +73,6 @@ const Login = () => {
                 {errors.email}
               </p>
             )}
-
-            {/* Password */}
             <input
               value={longindata.password}
               onChange={(e) => {
@@ -83,7 +81,6 @@ const Login = () => {
                   password: e.target.value,
                 }));
 
-                // Password লিখলে password error remove হবে
                 seterrors((prev) => ({
                   ...prev,
                   password: "",
@@ -93,8 +90,6 @@ const Login = () => {
               className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-1 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
               type="password"
             />
-
-            {/* Password error */}
             {errors.password && (
               <p className="text-red-500 text-[15px] font-semibold mb-3">
                 {errors.password}
