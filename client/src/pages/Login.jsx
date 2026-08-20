@@ -1,19 +1,23 @@
 import React, { useState } from "react";
-
+import { useLogginMutation } from "../lib/api";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigator=useNavigate()
   const [longindata, setlogindata] = useState({
     email: "",
     password: "",
   });
-
+  console.log(longindata);
+  
+const [loginuser,myerror]=useLogginMutation()
   const [errors, seterrors] = useState({
     email: "",
     password: "",
   });
 
-  const loghandlesub = (e) => {
+  const loghandlesub =async (e) => {
     e.preventDefault();
-
+   try {
     seterrors({
       email: "",
       password: "",
@@ -32,20 +36,27 @@ const Login = () => {
         password: "Enter your password",
       }));
     }
-
-    console.log(longindata);
-
-    // Successful submit হলে input খালি হবে
+   const res =await loginuser(longindata)
+    console.log(res);
+    if(res?.data){
+     return navigator("/")    }
+    
+     
     setlogindata({
       email: "",
       password: "",
     });
-  };
+
+
+   } catch (error) {
+    console.log(error.data)
+   }
+      };
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
       <div className="dark">
-        <div className="w-full max-w-md bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="w-full max-w-md bg-gray-800  rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-200 mb-4">Login</h2>
 
           <form onSubmit={loghandlesub} className="flex flex-col">
@@ -64,7 +75,7 @@ const Login = () => {
                 }));
               }}
               placeholder="Email address"
-              className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-1 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+              className="bg-gray-700 pl-3 text-gray-200 border-0 rounded-md p-2 mb-1 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
               type="email"
             />
 
@@ -87,7 +98,7 @@ const Login = () => {
                 }));
               }}
               placeholder="Password"
-              className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-1 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+              className="bg-gray-700 pl-3 text-gray-200 border-0 rounded-md p-2 mb-1 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
               type="password"
             />
             {errors.password && (
@@ -116,7 +127,7 @@ const Login = () => {
                 Don't have an account?{" "}
                 <a
                   className="text-sm text-blue-500 hover:underline mt-4"
-                  href="#"
+                  href="/signup"
                 >
                   Signup
                 </a>

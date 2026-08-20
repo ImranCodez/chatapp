@@ -36,8 +36,8 @@ const conversation = async (req, res) => {
   try {
     const conv = await conversationSchema.find({
       $or: [{ creator: req.user.id }, { participent: req.user.id }],
-    }).populate("creator participent", "fullname");
-    return sendResponse(res, 200, conv);
+    }).populate("creator participent", "fullname email");
+    return sendResponse(res, 200,"",true, conv);
   } catch (error) {
     console.log(error);
     sendResponse(res, 500, "Internal server error");

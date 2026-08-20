@@ -1,6 +1,6 @@
 const sendResponse = require("../helpers/responsehandler");
 const { generateAccsToken, generateRefToken } = require("../helpers/token");
-const User = require("../models/userSchema");
+    const userAuthSchema=require("../models/userSchema")
 
 // ...........signup part...//
 const signupuser = async (req, res) => {
@@ -9,12 +9,17 @@ const signupuser = async (req, res) => {
     if (!fullname) return sendResponse(res, 400, "fullname is required");
     if (!email) return sendResponse(res, 400, "email is required");
     if (!password) return sendResponse(res, 400, "password is required");
-    const existingUser = await User.findOne({
+    const existingUser = await userAuthSchema.findOne({
       email: email.toLowerCase(),
     });
     if (existingUser)
-      return sendResponse(res, 400, "User already exists with this email");
-    const user = new User({
+      return sendResponse(
+        res,
+        400,
+        true,
+        "User already exists with this email",
+      );
+    const user = new userAuthSchema({
       fullname,
       email: email.toLowerCase(),
       password,
@@ -22,6 +27,8 @@ const signupuser = async (req, res) => {
     user.save();
     sendResponse(res, 201, "signup is successfull");
   } catch (error) {
+    console.log(error);
+    
     sendResponse(res, 500, false, "Internal server error");
   }
 };
@@ -31,7 +38,7 @@ const signinuser = async (req, res) => {
     const { email, password } = req.body;
     if (!email) return sendResponse(res, 400, "email is required");
     if (!password) return sendResponse(res, 400, "password is required");
-    const existingUser = await User.findOne({ email });
+    const existingUser = await userAuthSchema.findOne({ email });
     if (!existingUser)
       return sendResponse(res, 400, "with this email user not exist");
     const matchpass = await existingUser.comparePassword(password);
@@ -59,8 +66,19 @@ const signinuser = async (req, res) => {
     sendResponse(res, 500, "Internal server error", false, error.message);
   }
 };
+const getprofile = async (req, res) => {
+  try {
+    const user = await userAuthSchema
+      .findById(req.user.id)
+      .select("-otp -updatedAt -otpExpires");
+    if (!user) return sendResponse(res, 400, "Inavlid oigfgfgoiooon request");
 
-module.exports = {
+    sendResponse(res, 200, "", true, user);
+  } catch (error) {
+    sendResponse(res, 500, "Internal server error");
+  }
+};module.exports = {
   signupuser,
   signinuser,
+  getprofile,
 };
